@@ -9,8 +9,9 @@
     
 ### 3.CSND1 ###
 
-
-    ![image](https://github.com/luoyanhan/break_captcha/blob/master/0cccc87c-a03c-44b8-b113-4a11adf11b99.png)
+ ![image](https://github.com/luoyanhan/break_captcha/blob/master/0cccc87c-a03c-44b8-b113-4a11adf11b99.png)
     
-    难度很小，二值化（只保留白色部分），投影法切割，再用KNN分类（captchas文件里的cuts文件夹是训练集）
+   难度很小，二值化（只保留白色部分），投影法切割，再用KNN分类（captchas文件里的cuts文件夹是训练集）
+    
+   
 
