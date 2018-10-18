@@ -34,12 +34,36 @@ def vertical(img):
             cuts.append((left, right))
     return cuts, h
 
+def vertical2(img):
+    h, w = img.shape
+    ver_li = []
+    for y in range(h):
+        black = 0
+        for x in range(w):
+            if img[y, x] == 0:
+                black += 1
+        ver_li.append(black)
+    bottom = 0
+    top = 0
+    flag = False
+    for i in range(h):
+        if not flag and ver_li[i] > 0:
+            bottom = i
+            flag = True
+        if flag and ver_li[i] <= 0:
+            top = i-1
+            break
+    return (bottom, top)
+
 def Cut_image(img_name):
     img = bin_img(img_name)
     cuts, h = vertical(img)
     img_li = []
     for t in cuts:
         new_image = img[0:h, t[0]:t[1]]
+        h, w = new_image.shape
+        bottom, top = vertical2(new_image)
+        new_image = new_image[bottom-1:top+1, 0:w]
         img_li.append(new_image)
     return img_li
 
@@ -47,17 +71,27 @@ def load_dataset():
     dataset = {}
     for key in range(10):
         li = []
-        for i in range(10):
+        for i in range(5):
             file = random.choice(os.listdir('./captchas/kind2/cuts/'+str(key)))
             filename = './captchas/kind2/cuts/'+str(key)+'/'+file
-            li.append(cv2.imread(filename, 0))
+            # li.append(cv2.imread(filename, 0))
+            img = cv2.imread(filename, 0)
+            h, w = img.shape
+            bottom, top = vertical2(img)
+            new_image = img[bottom - 1:top + 1, 0:w]
+            li.append(new_image)
         dataset[key] = li
     for key in string.ascii_uppercase:
         li = []
-        for i in range(10):
+        for i in range(5):
             file = random.choice(os.listdir('./captchas/kind2/cuts/'+str(key)))
             filename = './captchas/kind2/cuts/'+str(key)+'/'+file
-            li.append(cv2.imread(filename, 0))
+            # li.append(cv2.imread(filename, 0))
+            img = cv2.imread(filename, 0)
+            h, w = img.shape
+            bottom, top = vertical2(img)
+            new_image = img[bottom-1:top+1, 0:w]
+            li.append(new_image)
         dataset[key] = li
     return dataset
 
@@ -93,4 +127,4 @@ def recognize(file):
     return code
 
 if __name__ == "__main__":
-    print(recognize('./captchas/kind2/1f3c29d1-618f-431b-b9ed-5c40f1de7264.png'))
+    print(recognize('./captchas/kind2/1eaa7103-382f-4ea6-8e27-f33504ca2c0b.png'))
